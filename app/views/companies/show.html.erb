@@ -1,0 +1,33 @@
+<% if current_user&.owns?(@company) %>
+  <% if @company.pending? %>
+    <%= link_to 'Cancelar pedido de registro', company_cancel_registration_path(@company, id: @company.id), method: :put %>
+  <% else %>
+    <%= link_to 'Editar dados', edit_company_path(@company) %>
+  <% end %>
+<% end %>
+
+<div>
+    <span><%= Company.human_attribute_name('status') %>: <%= Company.human_attribute_name("status.#{@company.status}") %></span>
+</div>
+
+<% if @company.accepted? %>
+    <%= link_to t('.configure_payment'), company_payment_settings_path(@company) %>
+<% end %>
+
+<div>
+    <dl>
+        <dt><%= Company.human_attribute_name('legal_name') %>: </dt>
+        <dd> <%= @company.legal_name %></dd>
+        <dt><%= Company.human_attribute_name('cnpj') %>: </dt>
+        <dd> <%= @company.cnpj %></dd>
+        <dt><%= Company.human_attribute_name('billing_email') %>: </dt>
+        <dd> <%= @company.billing_email %></dd>
+        <dt><%= Company.human_attribute_name('billing_address') %>: </dt>
+        <dd> <%= @company.billing_address %></dd>
+        <% if @company.token %>
+          <%= t('.token_explanation') %> <br>
+          <dt><%= Company.human_attribute_name('token') %>: </dt>
+          <dd> <%= @company.token %></dd>
+        <% end %>
+    </dl>
+</div>
